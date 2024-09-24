@@ -54,3 +54,47 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 Button.displayName = "Button"
 
 export { Button, buttonVariants }
+
+// Fire算力公式
+const calculateFirePower = (
+  En: number,
+  Attr_reputation: number,
+  Attr_efficiency: number,
+  level: number,
+  Rating: number,
+  Z: number,
+  creditScoreFactor: number,
+  rankFactor: number
+): number => {
+  const baseTokenOutput = En * Math.pow(20 + Attr_reputation, 0.65) * 0.35 * 0.006666667 * Z;
+  const efficiencyBonus = Attr_efficiency / (Math.pow(level + 3, 1.45) + 70) * (Math.tanh((Rating - 1) * 1.7) * 0.8 + 0.8);
+  const firePower = baseTokenOutput * (1 + efficiencyBonus) * creditScoreFactor * rankFactor;
+  return firePower;
+};
+
+// 宝箱算力公式
+const calculateChestPower = (
+  En: number,
+  Attr_lucky: number,
+  Attr_efficiency: number,
+  level: number,
+  RSW: number,
+  Z: number,
+  creditScoreFactor: number,
+  rankFactor: number
+): number => {
+  const baseChestOutput = En * Math.pow(20 + Attr_lucky, 0.65) * 0.35 * 0.006666667 * Z;
+  const tacticsBonus = Attr_efficiency / (Math.pow(level + 3, 1.45) + 70) * (Math.tanh((RSW - 1) * 1.7) * 0.8 + 0.8);
+  const chestPower = baseChestOutput * (1 + tacticsBonus) * creditScoreFactor * rankFactor;
+  return chestPower;
+};
+
+// Fire产出数值公式
+const calculateFireOutput = (firePower: number, fireDifficulty: number): number => {
+  return firePower / fireDifficulty;
+};
+
+// 宝箱点数产出公式
+const calculateChestOutput = (chestPower: number, chestDifficulty: number): number => {
+  return chestPower * 10 / chestDifficulty;
+};

@@ -10,11 +10,10 @@ export default function FuturisticTokenCalculator() {
   const [formData, setFormData] = useState({
     en: "",
     attrReputation: "",
-    z: "",
     attrEfficiency: "",
     attrTactics: "",
     level: "",
-    creditCoefficient: ""
+    fireDifficulty: ""
   })
   const [result, setResult] = useState<number | null>(null)
 
@@ -27,16 +26,20 @@ export default function FuturisticTokenCalculator() {
 
   const calculateTokens = (e: React.FormEvent) => {
     e.preventDefault()
-    const { en, attrReputation, z, attrEfficiency, attrTactics, level, creditCoefficient } = formData
-    const tokens = (
-      parseFloat(en) *
-      (1 + parseFloat(attrReputation) / 100) *
-      parseFloat(z) *
-      (1 + parseFloat(attrEfficiency) / 100) *
-      (1 + parseFloat(attrTactics) / 100) *
-      (1 + parseFloat(level) / 100) *
-      parseFloat(creditCoefficient)
-    )
+    const { en, attrReputation, attrEfficiency, attrTactics, level, fireDifficulty } = formData
+    const creditCoefficient = 1
+    const rankCoefficient = 0.75
+    const Rating = 0.75
+    const RSW = 0.75
+    const X1 = 0.006666667
+    const Z = 1
+
+    const efficiencyBonus = parseFloat(attrEfficiency) / ((parseFloat(level) + 3) ** 1.45 + 70) * (Math.tanh((Rating - 1) * 1.7) * 0.8 + 0.8)
+    const tacticsBonus = parseFloat(attrTactics) / ((parseFloat(level) + 3) ** 1.45 + 70) * (Math.tanh((RSW - 1) * 1.7) * 0.8 + 0.8)
+    const baseOutput = parseFloat(en) * (20 + parseFloat(attrReputation)) ** 0.65 * 0.35 * X1 * Z
+    const firePower = baseOutput * (1 + efficiencyBonus + tacticsBonus) * creditCoefficient * rankCoefficient
+    const tokens = firePower / parseFloat(fireDifficulty)
+
     setResult(isNaN(tokens) ? null : tokens)
   }
 
@@ -55,11 +58,10 @@ export default function FuturisticTokenCalculator() {
                 <Label htmlFor={key} className="text-sm font-medium text-orange-300">
                   {key === "en" ? "En值" :
                    key === "attrReputation" ? "Attr_reputation值" :
-                   key === "z" ? "Z值" :
                    key === "attrEfficiency" ? "Attr_efficiency值" :
                    key === "attrTactics" ? "Attr_tactics值" :
                    key === "level" ? "level值" :
-                   "信用分系数"}
+                   "代币产出难度"}
                 </Label>
                 <Input
                   type="number"
