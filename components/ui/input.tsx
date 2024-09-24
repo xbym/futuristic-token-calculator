@@ -8,6 +8,7 @@ interface InputProps {
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   className?: string;
   required?: boolean;
+  placeholder?: string;
 }
 
 const Input: React.FC<InputProps> = ({ type, id, name, value, onChange, className, required }) => {
