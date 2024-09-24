@@ -1,10 +1,11 @@
 "use client"
 
-import { useState } from "react"
-import Button from "@/components/ui/button"
-import Input from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import * as React from "react";
+import { useState } from "react";
+import Button from "@/components/ui/button";
+import Input from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 export default function FuturisticTokenCalculator() {
   const [formData, setFormData] = useState({
@@ -14,34 +15,34 @@ export default function FuturisticTokenCalculator() {
     attrTactics: "",
     level: "",
     fireDifficulty: ""
-  })
-  const [result, setResult] = useState<number | null>(null)
+  });
+  const [result, setResult] = useState<number | null>(null);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value
-    })
-  }
+    });
+  };
 
   const calculateTokens = (e: React.FormEvent) => {
-    e.preventDefault()
-    const { en, attrReputation, attrEfficiency, attrTactics, level, fireDifficulty } = formData
-    const creditCoefficient = 1
-    const rankCoefficient = 0.75
-    const Rating = 0.75
-    const RSW = 0.75
-    const X1 = 0.006666667
-    const Z = 1
+    e.preventDefault();
+    const { en, attrReputation, attrEfficiency, attrTactics, level, fireDifficulty } = formData;
+    const creditCoefficient = 1;
+    const rankCoefficient = 0.75;
+    const Rating = 0.75;
+    const RSW = 0.75;
+    const X1 = 0.006666667;
+    const Z = 1;
 
-    const efficiencyBonus = parseFloat(attrEfficiency) / ((parseFloat(level) + 3) ** 1.45 + 70) * (Math.tanh((Rating - 1) * 1.7) * 0.8 + 0.8)
-    const tacticsBonus = parseFloat(attrTactics) / ((parseFloat(level) + 3) ** 1.45 + 70) * (Math.tanh((RSW - 1) * 1.7) * 0.8 + 0.8)
-    const baseOutput = parseFloat(en) * (20 + parseFloat(attrReputation)) ** 0.65 * 0.35 * X1 * Z
-    const firePower = baseOutput * (1 + efficiencyBonus + tacticsBonus) * creditCoefficient * rankCoefficient
-    const tokens = firePower / parseFloat(fireDifficulty)
+    const efficiencyBonus = parseFloat(attrEfficiency) / ((parseFloat(level) + 3) ** 1.45 + 70) * (Math.tanh((Rating - 1) * 1.7) * 0.8 + 0.8);
+    const tacticsBonus = parseFloat(attrTactics) / ((parseFloat(level) + 3) ** 1.45 + 70) * (Math.tanh((RSW - 1) * 1.7) * 0.8 + 0.8);
+    const baseOutput = parseFloat(en) * (20 + parseFloat(attrReputation)) ** 0.65 * 0.35 * X1 * Z;
+    const firePower = baseOutput * (1 + efficiencyBonus + tacticsBonus) * creditCoefficient * rankCoefficient;
+    const tokens = firePower / parseFloat(fireDifficulty);
 
-    setResult(isNaN(tokens) ? null : tokens)
-  }
+    setResult(isNaN(tokens) ? null : tokens);
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-black flex items-center justify-center p-4">
@@ -92,5 +93,5 @@ export default function FuturisticTokenCalculator() {
         </CardContent>
       </Card>
     </div>
-  )
+  );
 }
