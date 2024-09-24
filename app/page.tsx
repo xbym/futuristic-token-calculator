@@ -57,11 +57,11 @@ export default function FuturisticTokenCalculator() {
             {Object.entries(formData).map(([key, value]) => (
               <div key={key} className="space-y-2">
                 <Label htmlFor={key} className="text-sm font-medium text-orange-300">
-                  {key === "en" ? "En值" :
-                   key === "attrReputation" ? "Attr_reputation值" :
-                   key === "attrEfficiency" ? "Attr_efficiency值" :
-                   key === "attrTactics" ? "Attr_tactics值" :
-                   key === "level" ? "level值" :
+                  {key === "en" ? "消耗的体力值" :
+                   key === "attrReputation" ? "声望值" :
+                   key === "attrEfficiency" ? "效率" :
+                   key === "attrTactics" ? "战术" :
+                   key === "level" ? "等级" :
                    "代币产出难度"}
                 </Label>
                 <Input
